@@ -75,8 +75,8 @@ public class Main {
         }
 
         public static void ujiTangguh(){
-                Scanner masukan = new Scanner(System.in);
                 System.out.print("Masukkan Tahun Perolehan: ");
+                Scanner masukan = new Scanner(System.in);
                 try {
                         int tahun = Integer.parseInt(masukan.nextLine());
                         System.out.println("Tahun Tercatat: " + tahun);
