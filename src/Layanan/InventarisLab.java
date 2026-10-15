@@ -1,6 +1,7 @@
 package Layanan;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import model.Alat;
 
@@ -63,6 +64,32 @@ public class InventarisLab {
         List<Alat> hasil = new ArrayList<>();
         for (Alat a : daftarAlat) {
             if (!a.siapDipinjam()){
+                hasil.add(a);
+            }
+        }
+        return hasil;
+    }
+
+    public List<Alat> urut(Comparator<Alat> pembanding) {
+        List<Alat> salinan = new ArrayList<>(daftarAlat);
+        salinan.sort(pembanding);
+        return salinan;
+    }
+
+    public List<Alat> urutBawaan() {
+        return urut(Comparator.comparing(Alat::siapDipinjam)
+                .thenComparing(Alat::getNama));
+    }
+
+    public void hapusTidakSiap() {
+        daftarAlat.removeIf(a -> !a.siapDipinjam());
+    }
+
+    public List<Alat> cari(String kata) {
+        String k = kata.toLowerCase();
+        List<Alat> hasil = new ArrayList<>();
+        for (Alat a : daftarAlat) {
+            if (a.getNama().toLowerCase().contains(k)) {
                 hasil.add(a);
             }
         }

@@ -28,4 +28,7 @@ public abstract class Alat {
         String status = siapDipinjam() ? "SIAP" : "TIDAK SIAP";
         return String.format("%-8s %-22s %s", kodeAlat, nama, status);
     }
+    public int getTahunPerolehan() {
+    return tahunPerolehan;
+}
 }
