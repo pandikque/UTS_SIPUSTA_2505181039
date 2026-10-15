@@ -3,6 +3,7 @@ package model;
 import java.time.LocalDate;
 
 public class Laptop extends Alat implements Terlacak, Bersertifikat {
+    private static final long serialVersionUID = 1L;
 
     private int ramGB;
     private boolean chargerLengkap;

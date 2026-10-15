@@ -1,8 +1,12 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
 import Layanan.InventarisLab;
 import Layanan.LayananPeminjaman;
+import berkas.EksporLaporan;
+import berkas.PenyinmpananBerkas;
 import eksepsi.SipalabException;
 import model.Alat;
 import model.AlatUkur;
@@ -28,6 +32,29 @@ public class Main {
                 inventaris.cetakStatus();
                 inventaris.tambah(new AlatUkur("AU-001", "Multimeter", 2023, "volt", LocalDate.of(2024, 5, 15)));
                 inventaris.tambah(new Komponen("HP-0101", "Handphone", 2024, 10, 2));
+
+                try {
+                        new EksporLaporan().tulisInventaris(
+                                "laporan_inventaris.txt",
+                                inventaris.semuaAlat());
+                        System.out.println("Laporan inventaris dibuat: laporan_inventaris.txt");
+                } catch (IOException e) {
+                        System.err.println("Gagal membuat laporan inventaris: " + e.getMessage());
+                        e.printStackTrace();
+                }
+
+                try {
+                        // PenyimpanBerkas menulis daftar alat ke file inventaris.dat.
+                        PenyinmpananBerkas.PenyimpanBerkas penyimpan =
+                                new PenyinmpananBerkas().new PenyimpanBerkas("inventaris.dat");
+                        penyimpan.simpan(inventaris.semuaAlat());
+                        System.out.println("Data inventaris disimpan: inventaris.dat");
+                        // Muat kembali data untuk memastikan file inventaris.dat dapat dibaca.
+                        System.out.println("Jumlah data yang dimuat: " + penyimpan.muat().size());
+                } catch (IOException | ClassNotFoundException e) {
+                        System.err.println("Gagal menyimpan data inventaris: " + e.getMessage());
+                        e.printStackTrace();
+                }
 
                 Laptop lap = new Laptop("LP-002", "Laptop Lenovo", 2023, 16, true,
                         "SERT-LP-001", LocalDate.of(2027, 12, 31));
@@ -60,6 +87,21 @@ public class Main {
                 for (DetailPeminjaman d : pinjam.getDetail()){
                         System.out.println(" " + d.baris());
                 }
+
+                // Coba peminjaman lewat layanan; laptop ini siap dipinjam.
+                cobaPinjam(new LayananPeminjaman(), mhs, ptgs, lap);
+
+                // Uji input tahun, method ini akan meminta masukan dari pengguna.
+                ujiTangguh();
+
+                try {
+                        // Tulis contoh file teks dengan try-with-resources agar otomatis ditutup.
+                        tulisDenganMenutup();
+                        System.out.println("File Uji_AMAN.txt berhasil dibuat.");
+                } catch (IOException e) {
+                        System.err.println("Gagal membuat Uji_AMAN.txt: " + e.getMessage());
+                        e.printStackTrace();
+                }
         }
 
         //tambahan
@@ -82,6 +124,17 @@ public class Main {
                         System.out.println("Tahun Tercatat: " + tahun);
                 }catch (NumberFormatException e) {
                         System.out.println("Tahun harus berupa angka, contoh 2026");
+                }
+        }
+
+        //public static void tulisTanpaMenutup() throws IOException {
+        //        FileWriter fw = new FileWriter("uji_lupa_tutup.txt");
+        //        fw.write("Baris ini harusnya tersimpan.");
+        //        // Sengaja tidak dipanggil tulis.close()p
+        //}
+        public static void tulisDenganMenutup() throws IOException {
+                try(FileWriter tulis = new FileWriter("Uji_AMAN.txt")){
+                        tulis.write("Baris ini pasti Tersimpan");
                 }
         }
 }

@@ -3,7 +3,8 @@
 package model;
 
 public class Komponen extends Alat {
-
+    private static final long serialVersionUID = 1L;
+    
     private int jumlahStok;
     private int jumlahMinimum;
 

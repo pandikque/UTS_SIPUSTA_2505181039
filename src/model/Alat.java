@@ -1,11 +1,17 @@
 package model;
 
-public abstract class Alat {
+import java.io.Serializable;
+
+public abstract class Alat implements Serializable {
 
     // FIX: menambahkan status alat agar class lain bisa mengecek apakah alat sedang dipinjam
-    public static class Status {
+    public static class Status implements Serializable {
+        private static final long serialVersionUID = 1L;
+
         public boolean sedangDiluar;
     }
+
+    private static final long serialVersionUID = 1L;
 
     protected String kodeAlat;
     protected String nama;
@@ -28,6 +34,10 @@ public abstract class Alat {
 
     public String getNama() {
         return nama;
+    }
+
+    public String getJenis() {
+        return getClass().getSimpleName();
     }
 
     // FIX: getter kode alat dibutuhkan oleh `LayananPeminjaman`
