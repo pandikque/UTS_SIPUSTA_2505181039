@@ -3,6 +3,9 @@ package berkas;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.List;
@@ -26,5 +29,35 @@ public class EksporLaporan {
             tulis.println();
             tulis.println("Jumlah Alat: " + daftar.size());
         }
+    }
+
+    public void tulisCSV(String namaBerkas, List<Alat> daftar) throws IOException {
+        // Tulis header dan setiap alat sebagai satu baris CSV.
+        try (BufferedWriter tulis = Files.newBufferedWriter(
+                Path.of(namaBerkas), StandardCharsets.UTF_8)) {
+            tulis.write("KODE,NAMA,JENIS,STATUS");
+            tulis.newLine();
+
+            for (Alat a : daftar) {
+                String status = a.getStatus().sedangDiluar ? "Dipinjam" : "Tersedia";
+                // Escape tanda koma dan kutip supaya nilai tetap terbaca sebagai satu kolom.
+                tulis.write(escapeCSV(a.getKodeAlat()));
+                tulis.write(",");
+                tulis.write(escapeCSV(a.getNama()));
+                tulis.write(",");
+                tulis.write(escapeCSV(a.getJenis()));
+                tulis.write(",");
+                tulis.write(escapeCSV(status));
+                tulis.newLine();
+            }
+        }
+    }
+
+    private String escapeCSV(String nilai) {
+        if (nilai.contains(",") || nilai.contains("\"")
+                || nilai.contains("\n") || nilai.contains("\r")) {
+            return "\"" + nilai.replace("\"", "\"\"") + "\"";
+        }
+        return nilai;
     }
 }

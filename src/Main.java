@@ -38,8 +38,13 @@ public class Main {
                                 "laporan_inventaris.txt",
                                 inventaris.semuaAlat());
                         System.out.println("Laporan inventaris dibuat: laporan_inventaris.txt");
+                        // Buat salinan inventaris dalam format CSV agar mudah dibuka di spreadsheet.
+                        new EksporLaporan().tulisCSV(
+                                "inventaris.csv",
+                                inventaris.semuaAlat());
+                        System.out.println("Laporan CSV dibuat: inventaris.csv");
                 } catch (IOException e) {
-                        System.err.println("Gagal membuat laporan inventaris: " + e.getMessage());
+                        System.err.println("Gagal membuat laporan: " + e.getMessage());
                         e.printStackTrace();
                 }
 
@@ -115,16 +120,17 @@ public class Main {
                         System.out.println("    GAGAL: " + e.getMessage());
                 }
         }
-
+        
         public static void ujiTangguh(){
-                System.out.print("Masukkan Tahun Perolehan: ");
                 Scanner masukan = new Scanner(System.in);
+                System.out.print("Masukkan Tahun Perolehan: ");
                 try {
                         int tahun = Integer.parseInt(masukan.nextLine());
                         System.out.println("Tahun Tercatat: " + tahun);
                 }catch (NumberFormatException e) {
                         System.out.println("Tahun harus berupa angka, contoh 2026");
                 }
+                masukan.close();
         }
 
         //public static void tulisTanpaMenutup() throws IOException {

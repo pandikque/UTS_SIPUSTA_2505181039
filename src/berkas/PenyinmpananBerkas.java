@@ -25,7 +25,6 @@ public class PenyinmpananBerkas {
 
         @SuppressWarnings("unchecked")
         public List<Alat> muat() throws IOException, ClassNotFoundException {
-            // Baca kembali daftar alat yang sebelumnya disimpan dari file.
             try (ObjectInputStream masuk = new ObjectInputStream(new FileInputStream(namaBerkas))) {
                 return (List<Alat>) masuk.readObject();
             }
