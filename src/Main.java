@@ -1,6 +1,10 @@
 import java.time.LocalDate;
+import java.util.Scanner;
 
 import Layanan.InventarisLab;
+import Layanan.LayananPeminjaman;
+import eksepsi.SipalabException;
+import model.Alat;
 import model.AlatUkur;
 import model.Komponen;
 import model.Laptop;
@@ -55,6 +59,29 @@ public class Main {
 
                 for (DetailPeminjaman d : pinjam.getDetail()){
                         System.out.println(" " + d.baris());
+                }
+        }
+
+        //tambahan
+        // FIX: method ini memakai `LayananPeminjaman`, `Alat`, dan `SipalabException`
+        // jadi harus di-import di bagian atas file agar Java tahu kelas-kelas itu.
+        private static void cobaPinjam(LayananPeminjaman layanan, Mahasiswa mhs, Petugas ptg, Alat alat){
+                try{
+                        Peminjaman p = layanan.pinjam(mhs, ptg, alat, 1);
+                        System.out.println("    BERHASIL " + p.getNomorPeminjaman());
+                }catch (SipalabException e) {
+                        System.out.println("    GAGAL: " + e.getMessage());
+                }
+        }
+
+        public static void ujiTangguh(){
+                Scanner masukan = new Scanner(System.in);
+                System.out.print("Masukkan Tahun Perolehan: ");
+                try {
+                        int tahun = Integer.parseInt(masukan.nextLine());
+                        System.out.println("Tahun Tercatat: " + tahun);
+                }catch (NumberFormatException e) {
+                        System.out.println("Tahun harus berupa angka, contoh 2026");
                 }
         }
 }
